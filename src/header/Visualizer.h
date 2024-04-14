@@ -1,0 +1,8 @@
+#ifndef GRAPH_HEADER_VISUALIZER_H_
+#define GRAPH_HEADER_VISUALIZER_H_
+
+class Visualizer{
+
+};
+
+#endif // GRAPH_HEADER_VISUALIZER_H_
