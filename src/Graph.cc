@@ -5,6 +5,7 @@
 Graph::Graph(int _order, std::vector<std::vector<int>> &edges){
     order = _order;
     std::vector<std::vector<int>> _data (order);
+    // add symmetric edges to graph
     for (auto edge : edges) {
         _data[edge[0]].push_back(edge[1]);
         _data[edge[1]].push_back(edge[0]);
@@ -12,7 +13,7 @@ Graph::Graph(int _order, std::vector<std::vector<int>> &edges){
     data = _data;
 };
 
-std::vector<int> Graph::BFS(int S) {
+std::vector<int> Graph::BFS(int S) const {
     // queue to store the nodes in the order they are visited
     std::queue<int> q;
     // vector vith distances from Start Node to other
@@ -46,6 +47,21 @@ std::vector<int> Graph::BFS(int S) {
     return dist;
 };
 
-int Graph::Distance(int _from, int _to) {
+std::vector<std::vector<int>> Graph::AllDist() const {
+    // contains distances between vertexes.
+    // For example: distance[3][2] contains distance between 3 and 2
+    // id distances[i][j] == -1 - there is no path.
+    // distances[i][i] == 0 always.
+    std::vector<std::vector<int>> distances (order);
+
+    // calling BFS for all vertexes
+    for (int i = 0; i < order; i++) {
+        std::vector<int> dist = BFS(i);
+        distances[i] = dist;
+    }
+    return distances;
+};
+
+int Graph::Distance(int _from, int _to) const {
     return BFS(_from)[_to];
 }
