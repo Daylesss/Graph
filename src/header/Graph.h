@@ -30,7 +30,9 @@ class Graph {
   // in edges, edges 1-2 and 2-1 aoutomatically added to data.
   explicit Graph(int _order, std::vector<std::vector<int>> &edges);
   // find distance between vertexes using BFS
-  int Distance(int _from, int _to) const;
+  int Dist(int _from, int _to) const;
+  int Diameter() const;
+  int GetOrder() const;
 };
 
 #endif  // GRAPH_HEADER_GRAPH_H_

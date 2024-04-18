@@ -59,4 +59,18 @@ std::vector<std::vector<int>> Graph::FindDist() {
   return distances;
 };
 
-int Graph::Distance(int _from, int _to) const { return distances[_from][_to]; }
+int Graph::Dist(int _from, int _to) const { return distances[_from][_to]; }
+
+int Graph::Diameter() const {
+  int max_dist = -1;
+  for (int i = 0; i < order; i++) {
+    for (int j = 0; j < order; j++) {
+      if (max_dist < Dist(i, j)) {
+        max_dist = Dist(i, j);
+      }
+    }
+  }
+  return max_dist;
+}
+
+int Graph::GetOrder() const { return order; }

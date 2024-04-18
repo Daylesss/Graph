@@ -8,23 +8,24 @@
 
 class KamadaKawai {
   // vector of vertex cordinates
-  std::vector<std::pair<int, int>> VC;
+  std::vector<std::pair<int, int>> XY;
 
-  // lenght of side of square area
-  //  need to compute an L and l
-  int side_lenght = 0;
-  // constant to compute l
-  int L = 0;
-  // return max value of nested vectors
-  int GetMaxDist() const;
-  // Get L for spring. l - desired lenght of the spring
-  int SprL(int dist) const;
-  // Get K for spring. k - is an multiplier of spring to compuste energy
-  // k*d/2 - energy of the spring
-  int SprK(int dist) const;
+  // all desired lenghts of springs
+  std::vector<std::vector<int>> lvect;
+
+  // all spring ratios
+  std::vector<std::vector<int>> kvect;
+
+  // // constant to compute l
+  // int L = 0;
+  // // Get L for spring. l - desired lenght of the spring
+  // int SprL(int dist) const;
+  // // Get K for spring. k - is an multiplier of spring to compuste energy
+  // // k*d/2 - energy of the spring
+  // int SprK(int dist) const;
 
  public:
-  explicit KamadaKawai(int order, Graph graph) : VC(order) {}
+  explicit KamadaKawai(Graph graph, int side = 1000, double K = 5);
 };
 
 #endif  // GRAPH_HEADER_VISUALIZER_H_
