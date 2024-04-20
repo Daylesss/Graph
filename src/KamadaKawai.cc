@@ -38,3 +38,18 @@ void KamadaKawai::InitVertexes(int side, int order) {
   // for (int v = 1; v < order*order; v++) {
   // }
 }
+
+void KamadaKawai::RunOptimization(double eps) {
+  while (true) {
+    auto m_p = GetMaxM();
+    if (m_p.first < eps) {
+      break;
+    }
+    int p = m_p.second;
+    while (m_p.first > eps) {
+      auto deltaXY = GetDeltaXY(XY[p]);
+      XY[p].first = XY[p].first + deltaXY.first;
+      XY[p].second = XY[p].second + deltaXY.second;
+    }
+  }
+}

@@ -26,10 +26,16 @@ class KamadaKawai {
 
   void InitVertexes(int side, int order);
 
+  auto ComputeM(int num);
+
+  std::pair<double, int> GetMaxM();
+
+  std::pair<double, double> GetDeltaXY(std::pair<double, double> p);
+
  public:
   explicit KamadaKawai(Graph graph, int side, double K);
 
-  void RunOptimization();
+  void RunOptimization(double eps);
 
   double GetL(int _from, int _to) const { return lvect[_from][_to]; };
   double GetK(int _from, int _to) const { return kvect[_from][_to]; };
