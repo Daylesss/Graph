@@ -9,6 +9,7 @@ KamadaKawai::KamadaKawai(Graph graph, int side = 1000, double K = 5.0)
     : XY(graph.GetOrder() * graph.GetOrder(), std::pair<int, int>(-1, -1)),
       lvect(graph.GetOrder(), std::vector<double>(graph.GetOrder(), -1)),
       kvect(graph.GetOrder(), std::vector<double>(graph.GetOrder(), -1)) {
+  order = graph.GetOrder();
   double L = side / graph.Diameter();
   for (int i = 0; i < graph.GetOrder(); i++) {
     for (int j = 0; j < graph.GetOrder(); j++) {
@@ -22,10 +23,10 @@ KamadaKawai::KamadaKawai(Graph graph, int side = 1000, double K = 5.0)
       kvect[i][j] = K / ((d * d) * 1.0);
     }
   }
-  InitVertexes(side, graph.GetOrder());
+  InitVertexes(side);
 }
 
-void KamadaKawai::InitVertexes(int side, int order) {
+void KamadaKawai::InitVertexes(int side) {
   int end = side;
   for (int v = 0; v < order; v++) {
     int x = rand() % (end + 1);
@@ -52,4 +53,22 @@ void KamadaKawai::RunOptimization(double eps) {
       XY[p].second = XY[p].second + deltaXY.second;
     }
   }
+}
+
+std::pair<double, int> KamadaKawai::GetMaxM() const {
+  std::pair<double, int> m_p(-1, -1);
+  for (int num = 0; num < order; num++) {
+    double m = ComputeM(XY[num]);
+    if (m > m_p.first) {
+      m_p.first = m;
+      m_p.second = num;
+    }
+  }
+  return m_p;
+}
+
+double KamadaKawai::ComputeM(std::pair<int, int> p) const {
+  double derX = ComputeDer(p.first);
+  double derY = ComputeDer(p.second);
+  return std::sqrt((std::pow(derX, 2) + std::pow(derY, 2)));
 }

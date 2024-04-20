@@ -16,6 +16,8 @@ class KamadaKawai {
   // all spring ratios
   std::vector<std::vector<double>> kvect;
 
+  int order = 0;
+
   // // constant to compute l
   // int L = 0;
   // // Get L for spring. l - desired lenght of the spring
@@ -24,11 +26,15 @@ class KamadaKawai {
   // // k*d/2 - energy of the spring
   // int SprK(int dist) const;
 
-  void InitVertexes(int side, int order);
+  void InitVertexes(int side);
 
-  auto ComputeM(int num);
+  auto ComputeM(std::pair<double, double> p);
 
-  std::pair<double, int> GetMaxM();
+  std::pair<double, int> GetMaxM() const;
+
+  double ComputeM(std::pair<int, int> p) const;
+
+  double ComputeDer(double p) const;
 
   std::pair<double, double> GetDeltaXY(std::pair<double, double> p);
 
