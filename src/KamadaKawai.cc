@@ -5,10 +5,11 @@
 #include "Graph.h"
 
 // side - lenght of square area
-KamadaKawai::KamadaKawai(Graph graph, int side = 1000, double K = 5.0)
+KamadaKawai::KamadaKawai(Graph &graph, int side = 1000, double K = 5.0)
     : XY(graph.GetOrder() * graph.GetOrder(), std::pair<int, int>(-1, -1)),
       lvect(graph.GetOrder(), std::vector<double>(graph.GetOrder(), -1)),
       kvect(graph.GetOrder(), std::vector<double>(graph.GetOrder(), -1)) {
+  _graph = graph;
   order = graph.GetOrder();
   double L = side / graph.Diameter();
   for (int i = 0; i < graph.GetOrder(); i++) {
@@ -55,10 +56,10 @@ void KamadaKawai::RunOptimization(double eps) {
   }
 }
 
-std::pair<double, int> KamadaKawai::GetMaxM(Graph graph) const {
+std::pair<double, int> KamadaKawai::GetMaxM() const {
   std::pair<double, int> m_p(-1, -1);
   for (int num = 0; num < order; num++) {
-    double m = ComputeM(num, graph);
+    double m = ComputeM(num);
     if (m > m_p.first) {
       m_p.first = m;
       m_p.second = num;
@@ -67,12 +68,12 @@ std::pair<double, int> KamadaKawai::GetMaxM(Graph graph) const {
   return m_p;
 }
 
-double KamadaKawai::ComputeM(int num, Graph graph) const {
-  std::pair<double, double> derXY = ComputeDer(num, graph);
+double KamadaKawai::ComputeM(int num) const {
+  std::pair<double, double> derXY = ComputeDer(num);
   return std::sqrt((std::pow(derXY.first, 2) + std::pow(derXY.second, 2)));
 }
 
-std::pair<double, double> KamadaKawai::ComputeDer(int num, Graph graph) const {
+std::pair<double, double> KamadaKawai::ComputeDer(int num) const {
   double sumX = 0;
   double sumY = 0;
   for (int i=0; i < order; i++) {

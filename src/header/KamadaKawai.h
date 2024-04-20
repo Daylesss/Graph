@@ -17,6 +17,7 @@ class KamadaKawai {
   std::vector<std::vector<double>> kvect;
 
   int order = 0;
+  Graph &_graph;
 
   // // constant to compute l
   // int L = 0;
@@ -30,16 +31,16 @@ class KamadaKawai {
 
   auto ComputeM(std::pair<double, double> p);
 
-  std::pair<double, int> GetMaxM(Graph graph) const;
+  std::pair<double, int> GetMaxM() const;
 
-  double ComputeM(int num, Graph graph) const;
+  double ComputeM(int num) const;
 
-  std::pair<double, double> ComputeDer(int num, Graph graph) const;
+  std::pair<double, double> ComputeDer(int num) const;
 
   std::pair<double, double> GetDeltaXY(std::pair<double, double> p);
 
  public:
-  explicit KamadaKawai(Graph graph, int side, double K);
+  explicit KamadaKawai(Graph &graph, int side, double K);
 
   void RunOptimization(double eps);
 
