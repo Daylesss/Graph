@@ -13,6 +13,7 @@ int main() {
   // std::cout << graph.GetOrder() << graph.Dist(7,6);
 
   KamadaKawai A{graph, 1000, 5.0};
-  auto xy = A.GetXY(4);
-  std::cout << xy.first << " : " << xy.second << std::endl;
+  A.RunOptimization(0.5);
+  // auto xy = A.GetXY(4);
+  // std::cout << xy.first << " : " << xy.second << std::endl;
 }

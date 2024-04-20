@@ -17,7 +17,7 @@ class KamadaKawai {
   std::vector<std::vector<double>> kvect;
 
   int order = 0;
-  Graph &_graph;
+  // Graph &_graph;
 
   // // constant to compute l
   // int L = 0;

@@ -9,7 +9,7 @@ KamadaKawai::KamadaKawai(Graph &graph, int side = 1000, double K = 5.0)
     : XY(graph.GetOrder() * graph.GetOrder(), std::pair<int, int>(-1, -1)),
       lvect(graph.GetOrder(), std::vector<double>(graph.GetOrder(), -1)),
       kvect(graph.GetOrder(), std::vector<double>(graph.GetOrder(), -1)) {
-  _graph = graph;
+  // _graph = graph;
   order = graph.GetOrder();
   double L = side / graph.Diameter();
   for (int i = 0; i < graph.GetOrder(); i++) {
@@ -42,24 +42,26 @@ void KamadaKawai::InitVertexes(int side) {
 }
 
 void KamadaKawai::RunOptimization(double eps) {
-  while (true) {
+  // while (true) {
     auto m_p = GetMaxM();
-    if (m_p.first < eps) {
-      break;
-    }
-    int p = m_p.second;
-    while (m_p.first > eps) {
-      auto deltaXY = GetDeltaXY(XY[p]);
-      XY[p].first = XY[p].first + deltaXY.first;
-      XY[p].second = XY[p].second + deltaXY.second;
-    }
-  }
+    std::cout << m_p.first << " <:> " << m_p.second << std::endl;
+    // if (m_p.first < eps) {
+    //   break;
+    // }
+    // int p = m_p.second;
+    // while (m_p.first > eps) {
+    //   auto deltaXY = GetDeltaXY(XY[p]);
+    //   XY[p].first = XY[p].first + deltaXY.first;
+    //   XY[p].second = XY[p].second + deltaXY.second;
+    // }
+  // }
 }
 
 std::pair<double, int> KamadaKawai::GetMaxM() const {
   std::pair<double, int> m_p(-1, -1);
   for (int num = 0; num < order; num++) {
     double m = ComputeM(num);
+    // std::cout << ">>" << m << std::endl;
     if (m > m_p.first) {
       m_p.first = m;
       m_p.second = num;
@@ -70,6 +72,7 @@ std::pair<double, int> KamadaKawai::GetMaxM() const {
 
 double KamadaKawai::ComputeM(int num) const {
   std::pair<double, double> derXY = ComputeDer(num);
+  // std::cout << "::- " << derXY.first << std::endl;
   return std::sqrt((std::pow(derXY.first, 2) + std::pow(derXY.second, 2)));
 }
 
@@ -88,6 +91,7 @@ std::pair<double, double> KamadaKawai::ComputeDer(int num) const {
 
     double fracY = (GetL(num, i) * deltaY) / denominator;
     sumY +=  GetK(num, i) * (deltaY - fracY);
-  return std::pair<double, double> (sumX, sumY);
   }
+  std::cout << "[ " << sumX << " | " << sumY << "]" << std::endl;
+  return std::pair<double, double> (sumX, sumY);
 }
