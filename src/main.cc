@@ -13,5 +13,6 @@ int main() {
   // std::cout << graph.GetOrder() << graph.Dist(7,6);
 
   KamadaKawai A{graph, 1000, 5.0};
-  std::cout << ">>>>" << A.GetK(0, 6) << " : " << A.GetL(0, 6) << std::endl;
+  auto xy = A.GetXY(4);
+  std::cout << xy.first << " : " << xy.second << std::endl;
 }

@@ -8,13 +8,13 @@
 
 class KamadaKawai {
   // vector of vertex cordinates
-  std::vector<std::pair<int, int>> XY;
+  std::vector<std::pair<double, double>> XY;
 
   // all desired lenghts of springs
-  std::vector<std::vector<int>> lvect;
+  std::vector<std::vector<double>> lvect;
 
   // all spring ratios
-  std::vector<std::vector<int>> kvect;
+  std::vector<std::vector<double>> kvect;
 
   // // constant to compute l
   // int L = 0;
@@ -24,11 +24,16 @@ class KamadaKawai {
   // // k*d/2 - energy of the spring
   // int SprK(int dist) const;
 
+  void InitVertexes(int side, int order);
+
  public:
   explicit KamadaKawai(Graph graph, int side, double K);
-  
-  int GetL(int _from, int _to) const {return lvect[_from][_to];};
-  int GetK(int _from, int _to) const {return kvect[_from][_to];};
+
+  void RunOptimization();
+
+  double GetL(int _from, int _to) const { return lvect[_from][_to]; };
+  double GetK(int _from, int _to) const { return kvect[_from][_to]; };
+  auto GetXY(int num) const { return XY[num]; }
 };
 
 #endif  // GRAPH_HEADER_VISUALIZER_H_
