@@ -5,7 +5,7 @@
 #include <iostream>
 
 Graph::Graph(int _order, std::vector<std::vector<int>> &edges)
-    : data(_order), distances(order) {
+    : data(_order), distances(_order) {
   order = _order;
   // add symmetric edges to graph
   for (auto edge : edges) {

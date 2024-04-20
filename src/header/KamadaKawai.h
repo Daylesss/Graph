@@ -25,7 +25,10 @@ class KamadaKawai {
   // int SprK(int dist) const;
 
  public:
-  explicit KamadaKawai(Graph graph, int side = 1000, double K = 5);
+  explicit KamadaKawai(Graph graph, int side, double K);
+  
+  int GetL(int _from, int _to) const {return lvect[_from][_to];};
+  int GetK(int _from, int _to) const {return kvect[_from][_to];};
 };
 
 #endif  // GRAPH_HEADER_VISUALIZER_H_
