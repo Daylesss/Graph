@@ -55,10 +55,10 @@ void KamadaKawai::RunOptimization(double eps) {
   }
 }
 
-std::pair<double, int> KamadaKawai::GetMaxM() const {
+std::pair<double, int> KamadaKawai::GetMaxM(Graph graph) const {
   std::pair<double, int> m_p(-1, -1);
   for (int num = 0; num < order; num++) {
-    double m = ComputeM(XY[num]);
+    double m = ComputeM(num, graph);
     if (m > m_p.first) {
       m_p.first = m;
       m_p.second = num;
@@ -67,8 +67,26 @@ std::pair<double, int> KamadaKawai::GetMaxM() const {
   return m_p;
 }
 
-double KamadaKawai::ComputeM(std::pair<int, int> p) const {
-  double derX = ComputeDer(p.first);
-  double derY = ComputeDer(p.second);
-  return std::sqrt((std::pow(derX, 2) + std::pow(derY, 2)));
+double KamadaKawai::ComputeM(int num, Graph graph) const {
+  std::pair<double, double> derXY = ComputeDer(num, graph);
+  return std::sqrt((std::pow(derXY.first, 2) + std::pow(derXY.second, 2)));
+}
+
+std::pair<double, double> KamadaKawai::ComputeDer(int num, Graph graph) const {
+  double sumX = 0;
+  double sumY = 0;
+  for (int i=0; i < order; i++) {
+    if (i == num) {continue;}
+    // if (graph.Dist(num, i) == -1) {continue;}
+    double deltaX = (XY[num].first - XY[i].first);
+    double deltaY = (XY[num].second - XY[i].second);
+    double denominator = std::sqrt(std::pow(deltaX, 2) - std::pow(deltaY, 2));
+
+    double fracX = (GetL(num, i) * deltaX)/denominator;
+    sumX += GetK(num, i) * (deltaX - fracX);
+
+    double fracY = (GetL(num, i) * deltaY) / denominator;
+    sumY +=  GetK(num, i) * (deltaY - fracY);
+  return std::pair<double, double> (sumX, sumY);
+  }
 }

@@ -30,11 +30,11 @@ class KamadaKawai {
 
   auto ComputeM(std::pair<double, double> p);
 
-  std::pair<double, int> GetMaxM() const;
+  std::pair<double, int> GetMaxM(Graph graph) const;
 
-  double ComputeM(std::pair<int, int> p) const;
+  double ComputeM(int num, Graph graph) const;
 
-  double ComputeDer(double p) const;
+  std::pair<double, double> ComputeDer(int num, Graph graph) const;
 
   std::pair<double, double> GetDeltaXY(std::pair<double, double> p);
 
