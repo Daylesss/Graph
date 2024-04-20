@@ -37,7 +37,9 @@ class KamadaKawai {
 
   std::pair<double, double> ComputeDer(int num) const;
 
-  std::pair<double, double> GetDeltaXY(std::pair<double, double> p);
+  std::pair<double, double> GetDeltaXY(int num) const;
+
+  double ComputeA12(int num) const;
 
  public:
   explicit KamadaKawai(Graph &graph, int side, double K);

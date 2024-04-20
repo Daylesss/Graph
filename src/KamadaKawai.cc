@@ -1,8 +1,8 @@
-#include "KamadaKawai.h"
+#include "header/KamadaKawai.h"
 #define _USE_MATH_DEFINES
 #include <cmath>
 
-#include "Graph.h"
+#include "header/Graph.h"
 
 // side - lenght of square area
 KamadaKawai::KamadaKawai(Graph &graph, int side = 1000, double K = 5.0)
@@ -42,26 +42,25 @@ void KamadaKawai::InitVertexes(int side) {
 }
 
 void KamadaKawai::RunOptimization(double eps) {
-  // while (true) {
+  while (true) {
     auto m_p = GetMaxM();
-    std::cout << m_p.first << " <:> " << m_p.second << std::endl;
-    // if (m_p.first < eps) {
-    //   break;
-    // }
-    // int p = m_p.second;
-    // while (m_p.first > eps) {
-    //   auto deltaXY = GetDeltaXY(XY[p]);
-    //   XY[p].first = XY[p].first + deltaXY.first;
-    //   XY[p].second = XY[p].second + deltaXY.second;
-    // }
-  // }
+    std::cout << "!";
+    if (m_p.first < eps) {
+      break;
+    }
+    int p = m_p.second;
+    while (m_p.first > eps) {
+      auto deltaXY = GetDeltaXY(p);
+      XY[p].first = XY[p].first + deltaXY.first;
+      XY[p].second = XY[p].second + deltaXY.second;
+    }
+  }
 }
 
 std::pair<double, int> KamadaKawai::GetMaxM() const {
   std::pair<double, int> m_p(-1, -1);
   for (int num = 0; num < order; num++) {
     double m = ComputeM(num);
-    // std::cout << ">>" << m << std::endl;
     if (m > m_p.first) {
       m_p.first = m;
       m_p.second = num;
@@ -72,7 +71,8 @@ std::pair<double, int> KamadaKawai::GetMaxM() const {
 
 double KamadaKawai::ComputeM(int num) const {
   std::pair<double, double> derXY = ComputeDer(num);
-  // std::cout << "::- " << derXY.first << std::endl;
+  // std::cout << derXY.first << " -> " << std::pow(derXY.first, 2) << std::endl; 
+  // std::cout << derXY.second << " -> " << std::pow(derXY.second, 2);
   return std::sqrt((std::pow(derXY.first, 2) + std::pow(derXY.second, 2)));
 }
 
@@ -84,14 +84,21 @@ std::pair<double, double> KamadaKawai::ComputeDer(int num) const {
     // if (graph.Dist(num, i) == -1) {continue;}
     double deltaX = (XY[num].first - XY[i].first);
     double deltaY = (XY[num].second - XY[i].second);
-    double denominator = std::sqrt(std::pow(deltaX, 2) - std::pow(deltaY, 2));
+    double denominator = std::sqrt(std::pow(deltaX, 2) + std::pow(deltaY, 2));
 
     double fracX = (GetL(num, i) * deltaX)/denominator;
+    double val = GetK(num, i) * (deltaX - fracX);
     sumX += GetK(num, i) * (deltaX - fracX);
 
     double fracY = (GetL(num, i) * deltaY) / denominator;
     sumY +=  GetK(num, i) * (deltaY - fracY);
   }
-  std::cout << "[ " << sumX << " | " << sumY << "]" << std::endl;
   return std::pair<double, double> (sumX, sumY);
+}
+
+std::pair<double, double> KamadaKawai::GetDeltaXY(int num) const {
+  std::pair<double, double> derXY = ComputeDer(num);
+  double b1 = -derXY.first;
+  double b2 = -derXY.second;
+  double a12 = ComputeA12(num);
 }
