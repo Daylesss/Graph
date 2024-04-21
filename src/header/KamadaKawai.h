@@ -31,25 +31,25 @@ class KamadaKawai {
 
   auto ComputeM(std::pair<double, double> p);
 
-  std::pair<double, int> GetMaxM() const;
+  std::pair<double, int> GetMaxM();
 
-  double ComputeM(int num) const;
+  double ComputeM(int num);
 
-  std::pair<double, double> ComputeDer(int num) const;
+  std::pair<double, double> ComputeDer(int num);
 
-  std::pair<double, double> GetDeltaXY(int num) const;
+  std::pair<double, double> GetDeltaXY(int num);
 
-  double ComputeA12(int num) const;
-  std::pair<double, double> Compute2Der(int num) const;
+  double ComputeA12(int num);
+  std::pair<double, double> Compute2Der(int num);
 
  public:
   explicit KamadaKawai(Graph &graph, int side, double K);
 
   void RunOptimization(double eps);
 
-  double GetL(int _from, int _to) const { return lvect[_from][_to]; };
-  double GetK(int _from, int _to) const { return kvect[_from][_to]; };
-  auto GetXY(int num) const { return XY[num]; }
+  double GetL(int _from, int _to) { return lvect[_from][_to]; };
+  double GetK(int _from, int _to) { return kvect[_from][_to]; };
+  auto GetXY(int num) { return XY[num]; }
 };
 
 #endif  // GRAPH_HEADER_VISUALIZER_H_
