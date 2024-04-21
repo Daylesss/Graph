@@ -40,6 +40,7 @@ class KamadaKawai {
   std::pair<double, double> GetDeltaXY(int num) const;
 
   double ComputeA12(int num) const;
+  std::pair<double, double> Compute2Der(int num) const;
 
  public:
   explicit KamadaKawai(Graph &graph, int side, double K);
