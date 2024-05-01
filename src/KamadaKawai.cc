@@ -12,15 +12,15 @@ KamadaKawai::KamadaKawai(Graph &graph, int side = 1000, double K = 5.0)
   // _graph = graph;
   order = graph.GetOrder();
   double L = side / graph.Diameter();
-  for (int i = 0; i < graph.GetOrder(); i++) {
-    for (int j = 0; j < graph.GetOrder(); j++) {
+  for (int i = 0; i < order; i++) {
+    for (int j = 0; j < order; j++) {
       double d = graph.Dist(i, j);
       if (d < 0) {
         continue;
       } else if (i == j) {
         continue;
       }
-      lvect[i][j] = L * d;
+      lvect[i][j] = L * d * 1.0;
       kvect[i][j] = K / ((d * d) * 1.0);
     }
   }
@@ -75,7 +75,7 @@ std::pair<double, int> KamadaKawai::GetMaxM() {
 
 double KamadaKawai::ComputeM(int num) {
   std::pair<double, double> derXY = ComputeDer(num);
-  return std::sqrt((std::pow(derXY.first, 2) + std::pow(derXY.second, 2)));
+  return std::sqrt(std::pow(derXY.first, 2) + std::pow(derXY.second, 2));
 }
 
 std::pair<double, double> KamadaKawai::ComputeDer(int num) {
@@ -101,13 +101,17 @@ std::pair<double, double> KamadaKawai::ComputeDer(int num) {
 
 std::pair<double, double> KamadaKawai::GetDeltaXY(int num) {
   std::pair<double, double> derXY = ComputeDer(num);
-  double b1 = -derXY.first;
-  double b2 = -derXY.second;
-  double xy = ComputeA12(num);
-  std::pair<double, double> x2y2 = Compute2Der(num);
-  double determ = x2y2.first * x2y2.second - xy * xy;
-  double deltaX = (b1 * x2y2.second - xy * b2) / determ;
-  double deltaY = (x2y2.first * b2 - b1 * xy) / determ;
+  std::pair<double, double> a1_b2 = Compute2Der(num);
+  double c1 = -derXY.first;
+  double c2 = -derXY.second;
+  double b1 = ComputeA12(num);
+  double a2 = b1;
+  double a1 = a1_b2.first;
+  double b2 = a1_b2.second;
+
+  double determ = a2*b1 - b2*a1;
+  double deltaX = (c2*b1 - b2*c1) / determ;
+  double deltaY = (c1 * a2 - c2 * a1) / determ;
   return std::pair<double, double>(deltaX, deltaY);
 }
 
@@ -119,9 +123,9 @@ double KamadaKawai::ComputeA12(int num) {
     }
     double deltaX = XY[num].first - XY[i].first;
     double deltaY = XY[num].second - XY[i].second;
-    double denomenator = std::pow(deltaX, 2) + std::pow(deltaY, 2);
-    denomenator = denomenator * std::sqrt(denomenator);
-    sum += GetK(num, i) * (GetL(num, i) * deltaX * deltaY) / denomenator;
+    double denum = std::pow(deltaX, 2) + std::pow(deltaY, 2);
+    denum= denum * std::sqrt(denum);
+    sum += GetK(num, i) * (GetL(num, i) * deltaX * deltaY) / denum;
   }
   return sum;
 }
@@ -135,13 +139,13 @@ std::pair<double, double> KamadaKawai::Compute2Der(int num) {
     }
     double deltaX = XY[num].first - XY[i].first;
     double deltaY = XY[num].second - XY[i].second;
-    double denumenator = std::pow(deltaX, 2) + std::pow(deltaY, 2);
-    denumenator = denumenator * std::sqrt(denumenator);
-    double numenatorX = GetL(num, i) * std::pow(deltaX, 2);
-    double numenatorY = GetL(num, i) * std::pow(deltaY, 2);
+    double denum = std::pow(deltaX, 2) + std::pow(deltaY, 2);
+    denum = denum * std::sqrt(denum);
+    double numX = GetL(num, i) * std::pow(deltaY, 2);
+    double numY = GetL(num, i) * std::pow(deltaX, 2);
 
-    sumX += GetK(num, i) * (1 - numenatorX / denumenator);
-    sumY += GetK(num, i) * (1 - numenatorY / denumenator);
+    sumX += GetK(num, i) * (1 - numX / denum);
+    sumY += GetK(num, i) * (1 - numY / denum);
   }
   return std::pair<double, double>(sumX, sumY);
 }
