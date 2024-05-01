@@ -109,8 +109,8 @@ std::pair<double, double> KamadaKawai::GetDeltaXY(int num) {
   double a1 = a1_b2.first;
   double b2 = a1_b2.second;
 
-  double determ = a2*b1 - b2*a1;
-  double deltaX = (c2*b1 - b2*c1) / determ;
+  double determ = a2 * b1 - b2 * a1;
+  double deltaX = (c2 * b1 - b2 * c1) / determ;
   double deltaY = (c1 * a2 - c2 * a1) / determ;
   return std::pair<double, double>(deltaX, deltaY);
 }
@@ -124,7 +124,7 @@ double KamadaKawai::ComputeA12(int num) {
     double deltaX = XY[num].first - XY[i].first;
     double deltaY = XY[num].second - XY[i].second;
     double denum = std::pow(deltaX, 2) + std::pow(deltaY, 2);
-    denum= denum * std::sqrt(denum);
+    denum = denum * std::sqrt(denum);
     sum += GetK(num, i) * (GetL(num, i) * deltaX * deltaY) / denum;
   }
   return sum;
