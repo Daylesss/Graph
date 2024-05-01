@@ -15,8 +15,8 @@ int main() {
   Graph graph{8, edges};
   // std::cout << graph.GetOrder() << graph.Dist(7,6);
 
-  KamadaKawai A{graph, 1000, 1};
-  A.RunOptimization(50);
+  KamadaKawai A{graph, 1000, 5.0};
+  A.RunOptimization(0.5);
   // auto xy = A.GetXY(4);
   // std::cout << xy.first << " : " << xy.second << std::endl;
 }
