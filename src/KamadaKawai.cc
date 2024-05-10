@@ -6,7 +6,7 @@
 
 // side - lenght of square area
 KamadaKawai::KamadaKawai(Graph &graph, int side = 1000, double K = 5.0)
-    : XY(graph.GetOrder() * graph.GetOrder(), std::pair<int, int>(-1, -1)),
+    : XY(graph.GetOrder(), std::pair<int, int>(-1, -1)),
       lvect(graph.GetOrder(), std::vector<double>(graph.GetOrder(), -1)),
       kvect(graph.GetOrder(), std::vector<double>(graph.GetOrder(), -1)) {
   // _graph = graph;

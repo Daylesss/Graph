@@ -51,6 +51,14 @@ void BMP::Write(const std::string& filename) {
   image.close();
 }
 
+void BMP::CreateColorTable() {
+  for (int i = 0; i < 256; ++i) {
+    color_table_[i].red = i;
+    color_table_[i].green = i;
+    color_table_[i].blue = i;
+  }
+}
+
 void BMP::Interpret(const std::vector<std::vector<uint8_t>>& map) {
   // Clear data_ vector and reserve enough space
   // std::vector<uint8_t>().swap(data_);

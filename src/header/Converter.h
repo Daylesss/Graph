@@ -16,7 +16,7 @@ class Converter {
                   std::vector<std::vector<uint8_t>> &vertex_map);
 
   void AddNumbers(int num, std::pair<int, int> point,
-                  std::vector<std::vector<uint8_t>> vertex_map);
+                  std::vector<std::vector<uint8_t>> &vertex_map);
   std::vector<std::vector<uint8_t>> prettify_data(
       std::vector<std::pair<double, double>> &XY);
 

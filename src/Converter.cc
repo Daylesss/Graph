@@ -23,10 +23,10 @@ Converter::Converter(
 
 std::pair<uint, uint> Converter::GetBorders(
     std::vector<std::pair<double, double>> &XY) {
-  std::pair<int, int> minXY{std::numeric_limits<double>::max(),
-                            std::numeric_limits<double>::max()};
-  std::pair<int, int> maxXY{std::numeric_limits<double>::min(),
-                            std::numeric_limits<double>::min()};
+  std::pair<double, double> minXY{std::numeric_limits<double>::max(),
+                                  std::numeric_limits<double>::max()};
+  std::pair<double, double> maxXY{std::numeric_limits<double>::min(),
+                                  std::numeric_limits<double>::min()};
 
   for (auto &point : XY) {
     if (point.first < minXY.first) {
@@ -38,10 +38,11 @@ std::pair<uint, uint> Converter::GetBorders(
     if (point.second < minXY.second) {
       minXY.second = point.second;
     }
-    if (point.second < minXY.second) {
-      minXY.second = point.second;
+    if (point.second > maxXY.second) {
+      maxXY.second = point.second;
     }
   }
+  // return {1000, 1000};
   double offsetX =
       minXY.first > 0 ? border_offset : border_offset - minXY.first;
   double offsetY =
@@ -61,13 +62,16 @@ std::pair<uint, uint> Converter::GetBorders(
 void Converter::AddCircles(std::pair<double, double> &point,
                            std::pair<uint, uint> borderXY,
                            std::vector<std::vector<uint8_t>> &vertex_map) {
+  std::cout << point.first << " : " << point.second << std::endl;
   for (int y = -rad; y <= rad; y++) {
     for (int x = -rad; x <= rad; x++) {
       if (x * x + y * y <= rad * rad) {
         int px = static_cast<int>(point.first) + x;
         int py = static_cast<int>(point.second) + y;
+        // std::cout  << px << " : " << py;
 
-        if (px >= 0 && py >= 0 && px < borderXY.first && py < borderXY.second) {
+        if (px >= 0 && py >= 0 && px < static_cast<int>(borderXY.first) &&
+            py < static_cast<int>(borderXY.second)) {
           vertex_map[py][px] = 0;
         }
       }
@@ -76,7 +80,7 @@ void Converter::AddCircles(std::pair<double, double> &point,
 }
 
 void Converter::AddNumbers(int num, std::pair<int, int> point,
-                           std::vector<std::vector<uint8_t>> vertex_map) {
+                           std::vector<std::vector<uint8_t>> &vertex_map) {
   std::string number = std::to_string(num + 1);
   uint start_x = point.first + 2 * rad;
   uint start_y = point.second - rad;
@@ -84,7 +88,6 @@ void Converter::AddNumbers(int num, std::pair<int, int> point,
   for (auto &digit : number) {
     std::string filename(1, digit);
     filename = "../src/digits/" + filename + ".bmp";
-
     BMP digit_img;
     digit_img.Read(filename);
 
@@ -107,11 +110,12 @@ std::vector<std::vector<uint8_t>> Converter::prettify_data(
   std::vector<std::vector<uint8_t>> vertex_map{
       borderXY.second, std::vector<uint8_t>(borderXY.first, 255)};
 
-  for (int i = 0; i < XY.size(); i++) {
+  for (size_t i = 0; i < XY.size(); i++) {
     auto &point = XY[i];
     AddCircles(point, borderXY, vertex_map);
     AddNumbers(i, point, vertex_map);
   }
+
   return vertex_map;
 }
 

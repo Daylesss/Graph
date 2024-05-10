@@ -49,7 +49,8 @@ class KamadaKawai {
 
   double GetL(int _from, int _to) { return lvect[_from][_to]; };
   double GetK(int _from, int _to) { return kvect[_from][_to]; };
-  auto GetXY(int num) { return XY[num]; }
+  auto GetXY(int num) { return XY[num]; };
+  auto GetVertexPositions() { return XY; };
 };
 
 #endif  // GRAPH_HEADER_VISUALIZER_H_
