@@ -10,10 +10,12 @@ class Converter {
   int border_offset = 30;
 
   void prettify_data(std::vector<std::pair<double, double>> &XY);
+  std::pair<int, int> GetBorders(std::vector<std::pair<double, double>> &XY);
 
  public:
-  explicit Converter(std::vector<std::pair<double, double>> XY);  // std::vector<std::vector<int>>distances,
-                                                                  // int side
+  explicit Converter(std::vector<std::pair<double, double>>
+                         XY);  // std::vector<std::vector<int>>distances,
+                               // int side
   void Convert();
 };
 
