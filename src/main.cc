@@ -27,7 +27,7 @@ int main() {
   // std::vector<std::vector<int>> d{std::vector<int>(1)};
   // std::vector<std::pair<double, double>> XY{
   //     std::pair<double, double>(-23.64, 5)};
-  Converter C{A.GetVertexPositions(), "TEST.bmp"};
+  Converter C{edges, A.GetVertexPositions(), "TEST.bmp"};
   // auto xy = A.GetXY(4);
   // std::cout << xy.first << " : " << xy.second << std::endl;
 }

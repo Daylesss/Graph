@@ -18,10 +18,16 @@ class Converter {
   void AddNumbers(int num, std::pair<int, int> point,
                   std::vector<std::vector<uint8_t>> &vertex_map);
   std::vector<std::vector<uint8_t>> prettify_data(
-      std::vector<std::pair<double, double>> &XY);
+      std::vector<std::pair<double, double>> &XY,
+      std::vector<std::vector<int>> edges);
+
+  void DrawEdges(std::vector<std::vector<int>> edges,
+                 std::vector<std::pair<double, double>> &XY,
+                 std::vector<std::vector<uint8_t>> &vertex_map);
 
  public:
   explicit Converter(
+      std::vector<std::vector<int>> edges,
       std::vector<std::pair<double, double>> XY,
       const std::string &filename);  // std::vector<std::vector<int>>distances,
                                      // int side

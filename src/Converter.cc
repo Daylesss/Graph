@@ -7,13 +7,13 @@
 #include "header/BMP.h"
 #include "header/Graph.h"
 
-Converter::Converter(
-    // std::vector<std::vector<int>>distances,
-    std::vector<std::pair<double, double>> XY, const std::string &filename
-    //  int side
+Converter::Converter(std::vector<std::vector<int>> edges,
+                     std::vector<std::pair<double, double>> XY,
+                     const std::string &filename
+                     //  int side
 ) {
   auto &points = XY;
-  auto vertex_map = prettify_data(points);
+  auto vertex_map = prettify_data(points, edges);
 
   BMP graph_img;
   graph_img.Interpret(vertex_map);
@@ -62,7 +62,6 @@ std::pair<uint, uint> Converter::GetBorders(
 void Converter::AddCircles(std::pair<double, double> &point,
                            std::pair<uint, uint> borderXY,
                            std::vector<std::vector<uint8_t>> &vertex_map) {
-  std::cout << point.first << " : " << point.second << std::endl;
   for (int y = -rad; y <= rad; y++) {
     for (int x = -rad; x <= rad; x++) {
       if (x * x + y * y <= rad * rad) {
@@ -104,8 +103,45 @@ void Converter::AddNumbers(int num, std::pair<int, int> point,
   }
 };
 
+std::vector<std::pair<int, int>> GetLine(std::pair<int, int> from,
+                                         std::pair<int, int> to) {
+  std::vector<std::pair<int, int>> linevec;
+  const int deltaX = abs(to.first - from.first);
+  const int deltaY = abs(to.second - from.second);
+  const int signX = from.first < to.first ? 1 : -1;
+  const int signY = from.second < to.second ? 1 : -1;
+  int error = deltaX - deltaY;
+  linevec.push_back(to);
+  while (from.first != to.first || from.second != to.second) {
+    linevec.push_back(from);
+    int error2 = error * 2;
+    if (error2 > -deltaY) {
+      error -= deltaY;
+      from.first += signX;
+    }
+    if (error2 < deltaX) {
+      error += deltaX;
+      from.second += signY;
+    }
+  }
+  return linevec;
+}
+
+void Converter::DrawEdges(std::vector<std::vector<int>> edges,
+                          std::vector<std::pair<double, double>> &XY,
+                          std::vector<std::vector<uint8_t>> &vertex_map) {
+  for (auto edge : edges) {
+    auto line = GetLine(XY[edge[0]], XY[edge[1]]);
+    std::cout << line[0].first << std::endl;
+    for (auto point : line) {
+      vertex_map[point.second][point.first] = 0;
+    }
+  }
+}
+
 std::vector<std::vector<uint8_t>> Converter::prettify_data(
-    std::vector<std::pair<double, double>> &XY) {
+    std::vector<std::pair<double, double>> &XY,
+    std::vector<std::vector<int>> edges) {
   std::pair<uint, uint> borderXY = GetBorders(XY);
   std::vector<std::vector<uint8_t>> vertex_map{
       borderXY.second, std::vector<uint8_t>(borderXY.first, 255)};
@@ -115,6 +151,8 @@ std::vector<std::vector<uint8_t>> Converter::prettify_data(
     AddCircles(point, borderXY, vertex_map);
     AddNumbers(i, point, vertex_map);
   }
+
+  DrawEdges(edges, XY, vertex_map);
 
   return vertex_map;
 }
