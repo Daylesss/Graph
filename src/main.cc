@@ -16,5 +16,6 @@ int main() {
 
   KamadaKawai A{graph, 1000, 5.0};
   A.RunOptimization(0.5);
-  Converter C{edges, A.GetVertexPositions(), "TEST.bmp"};
+  Converter C{edges, A.GetVertexPositions()};
+  C.Convert("GRAPH.bmp");
 }

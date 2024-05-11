@@ -7,18 +7,29 @@
 #include "header/BMP.h"
 #include "header/Graph.h"
 
-Converter::Converter(std::vector<std::vector<int>> edges,
-                     std::vector<std::pair<double, double>> XY,
-                     const std::string &filename) {
-  auto &points = XY;
-  ConvertToMap(points, edges);
+Converter::Converter(std::vector<std::vector<int>> _edges,
+                     std::vector<std::pair<double, double>> _XY) {
+  edges = _edges;
+  XY = _XY;
+  ComputeBorders();
+  std::vector<std::vector<uint8_t>> _vertex_map{
+      borderXY.second, std::vector<uint8_t>(borderXY.first, 255)};
+  vertex_map = _vertex_map;
 
+  // ConvertToMap(XY);
+
+  // BMP graph_img;
+  // graph_img.Interpret(vertex_map);
+  // graph_img.Write(filename);
+}
+
+void Converter::SaveTo(const std::string &filename) {
   BMP graph_img;
   graph_img.Interpret(vertex_map);
   graph_img.Write(filename);
-}
+};
 
-void Converter::ComputeBorders(std::vector<std::pair<double, double>> &XY) {
+void Converter::ComputeBorders() {
   std::pair<double, double> minXY{std::numeric_limits<double>::max(),
                                   std::numeric_limits<double>::max()};
   std::pair<double, double> maxXY{std::numeric_limits<double>::min(),
@@ -38,7 +49,6 @@ void Converter::ComputeBorders(std::vector<std::pair<double, double>> &XY) {
       maxXY.second = point.second;
     }
   }
-  // return {1000, 1000};
   double offsetX =
       minXY.first > 0 ? border_offset : border_offset - minXY.first;
   double offsetY =
@@ -61,7 +71,6 @@ void Converter::AddCircles(std::pair<double, double> &point) {
       if (x * x + y * y <= rad * rad) {
         int px = static_cast<int>(point.first) + x;
         int py = static_cast<int>(point.second) + y;
-        // std::cout  << px << " : " << py;
 
         if (px >= 0 && py >= 0 && px < static_cast<int>(borderXY.first) &&
             py < static_cast<int>(borderXY.second)) {
@@ -120,31 +129,25 @@ std::vector<std::pair<int, int>> GetLine(std::pair<int, int> from,
   return linevec;
 }
 
-void Converter::DrawEdges(std::vector<std::vector<int>> edges,
-                          std::vector<std::pair<double, double>> &XY) {
+void Converter::DrawEdges() {
   for (auto edge : edges) {
     auto line = GetLine(XY[edge[0]], XY[edge[1]]);
-    std::cout << line[0].first << std::endl;
     for (auto point : line) {
       vertex_map[point.second][point.first] = 0;
     }
   }
 }
 
-void Converter::ConvertToMap(std::vector<std::pair<double, double>> &XY,
-                             std::vector<std::vector<int>> edges) {
-  ComputeBorders(XY);
-  std::vector<std::vector<uint8_t>> _vertex_map{
-      borderXY.second, std::vector<uint8_t>(borderXY.first, 255)};
-  vertex_map = _vertex_map;
-
+void Converter::FillTheMap() {  //,std::vector<std::vector<int>> edges
   for (size_t i = 0; i < XY.size(); i++) {
     auto &point = XY[i];
     AddCircles(point);
     AddNumbers(i, point);
   }
-
-  DrawEdges(edges, XY);
 }
 
-void Converter::Convert() {}
+void Converter::Convert(const std::string &filename) {
+  FillTheMap();
+  DrawEdges();
+  SaveTo(filename);
+}
