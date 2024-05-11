@@ -9,17 +9,25 @@ KamadaKawai::KamadaKawai(Graph &graph, int side = 1000, double K = 5.0)
     : XY(graph.GetOrder(), std::pair<int, int>(-1, -1)),
       lvect(graph.GetOrder(), std::vector<double>(graph.GetOrder(), -1)),
       kvect(graph.GetOrder(), std::vector<double>(graph.GetOrder(), -1)) {
+  // set graph order
   order = graph.GetOrder();
+  // constant to compute l (desired lenght)
   double L = side / graph.GetDiameter();
   for (int i = 0; i < order; i++) {
     for (int j = 0; j < order; j++) {
       double d = graph.Dist(i, j);
+      // skip vertex if it is not connected
       if (d < 0) {
         continue;
-      } else if (i == j) {
+      }
+      // skip if it is the same vertexes
+      else if (i == j) {
         continue;
       }
+      // desired lenght of spring
+      // between vertex i and vertex j
       lvect[i][j] = L * d * 1.0;
+      // energy multiplier between this vertexes
       kvect[i][j] = K / ((d * d) * 1.0);
     }
   }
@@ -29,31 +37,36 @@ KamadaKawai::KamadaKawai(Graph &graph, int side = 1000, double K = 5.0)
 void KamadaKawai::InitVertexes(int side) {
   int end = side;
   for (int v = 0; v < order; v++) {
+    // set random values (<=side)
     int x = rand() % (end + 1);
     int y = rand() % (end + 1);
     XY[v] = std::pair<int, int>(x, y);
   }
-  // double center = side / 2.0;
-  // double angle = M_PI - (M_PI/2.0) * ((order-2.0)/order);
-  // XY[0] = std::pair<int, int> (center, 0);
-  // for (int v = 1; v < order*order; v++) {
-  // }
 }
 
 void KamadaKawai::RunOptimization(double eps) {
   while (true) {
+    // get max deviation
     auto m_p = GetMaxM();
+    // exit the  when max deviation < eps
+    // (and obviusly all the other)
     if (m_p.first < eps) {
       break;
     }
+    // numper of vertex with max deviation
     int p = m_p.second;
     while (true) {
+      // compute deviation in nested loop
+      // for current p
       double a = ComputeM(p);
-      // std::cout << ">> " << a <<std::endl;
+      // exit loop if the deviation < eps
       if (a < eps) {
         break;
       }
+      // get displacement for x and y
+      // to minimize deviation
       auto deltaXY = GetDeltaXY(p);
+      // move vertex
       XY[p].first = XY[p].first + deltaXY.first;
       XY[p].second = XY[p].second + deltaXY.second;
     }
@@ -62,6 +75,7 @@ void KamadaKawai::RunOptimization(double eps) {
 
 std::pair<double, int> KamadaKawai::GetMaxM() {
   std::pair<double, int> m_p(-1, -1);
+  // loop for find maximum in the vector
   for (int num = 0; num < order; num++) {
     double m = ComputeM(num);
     if (m > m_p.first) {

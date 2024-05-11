@@ -18,24 +18,40 @@ class KamadaKawai {
 
   int order = 0;
 
+  // set random values of cordinates for the vertexes
   void InitVertexes(int side);
 
-  auto ComputeM(std::pair<double, double> p);
-
+  // return pair of number of vertex with maximum
+  // deviation and the deviation value
   std::pair<double, int> GetMaxM();
 
+  // compute the deviation using the formula
   double ComputeM(int num);
 
+  // compute first degree derivatives for coordinates
+  // of the passed vertex
   std::pair<double, double> ComputeDer(int num);
 
+  // get displacement for x and y
+  // to minimize deviation
   std::pair<double, double> GetDeltaXY(int num);
 
+  // compute derivate by y and x variables
   double ComputeA12(int num);
+
+  // compute second degree derivatives for coordinates
+  // of the passed vertex
   std::pair<double, double> Compute2Der(int num);
 
  public:
+  // init vertexes by setting cordinates
+  // Compute all l and k for all vertexes
   explicit KamadaKawai(Graph &graph, int side, double K);
 
+  // main loop for algorith
+  // move vertexes into positions with low energy
+  // until desired until maximum deviation (MaxM)
+  // will be smaller than eps
   void RunOptimization(double eps);
   // Get L for spring. l - desired lenght of the spring
   double GetL(int _from, int _to) { return lvect[_from][_to]; };

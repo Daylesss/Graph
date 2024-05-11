@@ -9,16 +9,13 @@
 
 Converter::Converter(std::vector<std::vector<int>> edges,
                      std::vector<std::pair<double, double>> XY,
-                     const std::string &filename
-                     //  int side
-) {
+                     const std::string &filename) {
   auto &points = XY;
   auto vertex_map = prettify_data(points, edges);
 
   BMP graph_img;
   graph_img.Interpret(vertex_map);
   graph_img.Write(filename);
-  //   std::vector<std::vector<>>
 }
 
 std::pair<uint, uint> Converter::GetBorders(
