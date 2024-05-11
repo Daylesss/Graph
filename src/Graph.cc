@@ -5,15 +5,16 @@
 #include <iostream>
 
 Graph::Graph(int _order, std::vector<std::vector<int>> &edges)
-    : data(_order), distances(_order) {
+    : data(_order), distances(_order, std::vector<int>(_order, -1)) {
   order = _order;
   // add symmetric edges to graph
   for (auto edge : edges) {
     data[edge[0]].push_back(edge[1]);
     data[edge[1]].push_back(edge[0]);
   };
-
-  distances = FindDist();
+  // fill variable distances with data
+  FindDist();
+  FindDiameter();
 };
 
 std::vector<int> Graph::BFS(int S) const {
@@ -50,18 +51,15 @@ std::vector<int> Graph::BFS(int S) const {
   return dist;
 };
 
-std::vector<std::vector<int>> Graph::FindDist() {
+void Graph::FindDist() {  // std::vector<std::vector<int>>
   // calling BFS for all vertexes
   for (int i = 0; i < order; i++) {
-    std::vector<int> dist = BFS(i);
-    distances[i] = dist;
+    distances[i] = BFS(i);
   }
-  return distances;
 };
 
-int Graph::Dist(int _from, int _to) const { return distances[_from][_to]; }
-
-int Graph::Diameter() const {
+void Graph::FindDiameter() {
+  // max_dist= -1 when all the vertexes have no edges
   int max_dist = -1;
   for (int i = 0; i < order; i++) {
     for (int j = 0; j < order; j++) {
@@ -70,7 +68,5 @@ int Graph::Diameter() const {
       }
     }
   }
-  return max_dist;
+  diameter = max_dist;
 }
-
-int Graph::GetOrder() const { return order; }

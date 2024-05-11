@@ -9,6 +9,8 @@
 class Graph {
   // Graph order - number of graph vertexes
   int order = 0;
+  //
+  int diameter = 0;
   // all graph edges. Each vector number contains
   // a list with all vertices that are associated with that number.
   std::vector<std::vector<int>> data;
@@ -23,16 +25,20 @@ class Graph {
   std::vector<int> BFS(int S) const;
 
   // func to find distances between all of the edges
-  std::vector<std::vector<int>> FindDist();
+  //  using BFS
+  void FindDist();
+  // find the longest distance in the graph
+  void FindDiameter();
 
  public:
   // construct graph from edges. If edge {1 , 2}
   // in edges, edges 1-2 and 2-1 aoutomatically added to data.
   explicit Graph(int _order, std::vector<std::vector<int>> &edges);
-  // find distance between vertexes using BFS
-  int Dist(int _from, int _to) const;
-  int Diameter() const;
-  int GetOrder() const;
+  // get distance between vertexes
+  int Dist(int _from, int _to) const { return distances[_from][_to]; };
+  // return the number of vertexes
+  int GetOrder() const { return order; };
+  int GetDiameter() const { return diameter; }
 };
 
 #endif  // GRAPH_HEADER_GRAPH_H_

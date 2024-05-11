@@ -11,7 +11,7 @@ KamadaKawai::KamadaKawai(Graph &graph, int side = 1000, double K = 5.0)
       kvect(graph.GetOrder(), std::vector<double>(graph.GetOrder(), -1)) {
   // _graph = graph;
   order = graph.GetOrder();
-  double L = side / graph.Diameter();
+  double L = side / graph.GetDiameter();
   for (int i = 0; i < order; i++) {
     for (int j = 0; j < order; j++) {
       double d = graph.Dist(i, j);
