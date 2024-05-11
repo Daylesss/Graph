@@ -17,15 +17,6 @@ class KamadaKawai {
   std::vector<std::vector<double>> kvect;
 
   int order = 0;
-  // Graph &_graph;
-
-  // // constant to compute l
-  // int L = 0;
-  // // Get L for spring. l - desired lenght of the spring
-  // int SprL(int dist) const;
-  // // Get K for spring. k - is an multiplier of spring to compuste energy
-  // // k*d/2 - energy of the spring
-  // int SprK(int dist) const;
 
   void InitVertexes(int side);
 
@@ -46,10 +37,14 @@ class KamadaKawai {
   explicit KamadaKawai(Graph &graph, int side, double K);
 
   void RunOptimization(double eps);
-
+  // Get L for spring. l - desired lenght of the spring
   double GetL(int _from, int _to) { return lvect[_from][_to]; };
+  // Get K for spring. k - is an multiplier of spring to compuste energy
+  // k*d/2 - energy of the spring
   double GetK(int _from, int _to) { return kvect[_from][_to]; };
+  // return coordinates of the 'i' vertex
   auto GetXY(int num) { return XY[num]; };
+  // return all coordinates
   auto GetVertexPositions() { return XY; };
 };
 
