@@ -4,15 +4,52 @@
 
 #include <iostream>
 
-Graph::Graph(int _order, std::vector<std::vector<int>> &edges)
-    : data(_order), distances(_order, std::vector<int>(_order, -1)) {
+Graph::Graph(int _order, std::vector<std::vector<int>> _edges)
+    : data(_order),
+    distances(_order, std::vector<int>(_order, -1)) {
   order = _order;
+  edges.swap(_edges);
   // add symmetric edges to graph
   for (auto edge : edges) {
     data[edge[0]].push_back(edge[1]);
     data[edge[1]].push_back(edge[0]);
   };
   // fill variable distances with data
+  FindDist();
+  FindDiameter();
+};
+
+Graph::Graph(const std::string &filename) {
+  std::ifstream input(filename);
+  // check if the file opened
+  if (!input.is_open()) {
+    throw std::runtime_error("Failed to open file");
+  }
+  
+  input >> order >> size;
+
+  data.resize(order);
+  distances.resize(order, std::vector<int>(order, -1));
+
+  for (int i = 0; i < size; i++) {
+    int v_from, v_to;
+    input >> v_from >> v_to;
+    // decrease values, because vector starts from 0
+    // we have to do this to make calculations easier
+    // and in the graph we restore initial values
+    v_from--;
+    v_to--;
+
+    // Check if the indices are valid
+    if (v_from < 0 || v_to >= order || v_to < 0 || v_to >= order) {
+      throw std::runtime_error("Invalid vertex index in edge definition");
+    }
+    edges.push_back(std::vector<int> {v_from, v_to});
+
+    data[v_from].push_back(v_to);
+    data[v_to].push_back(v_from);
+  }
+  input.close();
   FindDist();
   FindDiameter();
 };
@@ -52,14 +89,14 @@ std::vector<int> Graph::BFS(int S) const {
 };
 
 void Graph::FindDist() {  // std::vector<std::vector<int>>
-  // calling BFS for all vertexes
+  // calling BFS for all verteces
   for (int i = 0; i < order; i++) {
     distances[i] = BFS(i);
   }
 };
 
 void Graph::FindDiameter() {
-  // max_dist= -1 when all the vertexes have no edges
+  // max_dist= -1 when all the verteces have no edges
   int max_dist = -1;
   for (int i = 0; i < order; i++) {
     for (int j = 0; j < order; j++) {

@@ -20,21 +20,21 @@ KamadaKawai::KamadaKawai(Graph &graph, int side = 1000, double K = 5.0)
       if (d < 0) {
         continue;
       }
-      // skip if it is the same vertexes
+      // skip if it is the same verteces
       else if (i == j) {
         continue;
       }
       // desired lenght of spring
       // between vertex i and vertex j
       lvect[i][j] = L * d * 1.0;
-      // energy multiplier between this vertexes
+      // energy multiplier between this verteces
       kvect[i][j] = K / ((d * d) * 1.0);
     }
   }
-  InitVertexes(side);
+  InitVerteces(side);
 }
 
-void KamadaKawai::InitVertexes(int side) {
+void KamadaKawai::InitVerteces(int side) {
   int end = side;
   for (int v = 0; v < order; v++) {
     // set random values (<=side)

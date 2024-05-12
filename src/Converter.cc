@@ -82,6 +82,7 @@ void Converter::AddCircles(std::pair<double, double> &point) {
 }
 
 void Converter::AddNumbers(int num, std::pair<int, int> point) {
+  // increase number vecouse we decreade it in the Graph constructor
   std::string number = std::to_string(num + 1);
   uint start_x = point.first + 2 * rad;
   uint start_y = point.second - rad;
@@ -138,7 +139,7 @@ void Converter::DrawEdges() {
   }
 }
 
-void Converter::FillTheMap() {  //,std::vector<std::vector<int>> edges
+void Converter::FillTheMap() {
   for (size_t i = 0; i < XY.size(); i++) {
     auto &point = XY[i];
     AddCircles(point);

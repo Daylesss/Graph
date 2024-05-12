@@ -18,8 +18,8 @@ class KamadaKawai {
 
   int order = 0;
 
-  // set random values of cordinates for the vertexes
-  void InitVertexes(int side);
+  // set random values of cordinates for the verteces
+  void InitVerteces(int side);
 
   // return pair of number of vertex with maximum
   // deviation and the deviation value
@@ -44,12 +44,12 @@ class KamadaKawai {
   std::pair<double, double> Compute2Der(int num);
 
  public:
-  // init vertexes by setting cordinates
-  // Compute all l and k for all vertexes
+  // init verteces by setting cordinates
+  // Compute all l and k for all verteces
   explicit KamadaKawai(Graph &graph, int side, double K);
 
   // main loop for algorith
-  // move vertexes into positions with low energy
+  // move verteces into positions with low energy
   // until desired until maximum deviation (MaxM)
   // will be smaller than eps
   void RunOptimization(double eps);
