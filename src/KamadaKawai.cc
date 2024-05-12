@@ -64,6 +64,9 @@ void KamadaKawai::RunOptimization(double eps) {
       if (a < eps) {
         break;
       }
+      // in some cases algorythm can be looped at one vertex
+      // than we skip it. Move other verces
+      // and than come back to this vertex
       if (count > 200) {
         std::cout << "Exceeded max loop count" << std::endl;
         std::cout << "skip this vertex and come back later" << std::endl;
@@ -105,10 +108,10 @@ std::pair<double, double> KamadaKawai::ComputeDer(int num) {
     if (i == num) {
       continue;
     }
+    // skip pair of verteces if they have no path
     if (GetK(num, i) == -1 or GetL(num, i) == 1) {
       continue;
     }
-    // if (graph.Dist(num, i) == -1) {continue;}
     double deltaX = (XY[num].first - XY[i].first);
     double deltaY = (XY[num].second - XY[i].second);
     double denominator = std::sqrt(std::pow(deltaX, 2) + std::pow(deltaY, 2));
@@ -144,6 +147,7 @@ double KamadaKawai::ComputeA12(int num) {
     if (i == num) {
       continue;
     }
+    // skip pair of verteces if they have no path
     if (GetK(num, i) == -1 or GetL(num, i) == 1) {
       continue;
     }
@@ -163,6 +167,7 @@ std::pair<double, double> KamadaKawai::Compute2Der(int num) {
     if (i == num) {
       continue;
     }
+    // skip pair of verteces if they have no path
     if (GetK(num, i) == -1 or GetL(num, i) == 1) {
       continue;
     }
