@@ -47,7 +47,11 @@ class Graph {
   // return the longest path between vertexes in the graph
   int GetDiameter() const { return diameter; }
   // return all edges passed during initializing
-  std::vector<std::vector<int>> GetEdges() const {return edges;}
+  std::vector<std::vector<int>> GetEdges() const { return edges; }
+
+  std::vector<std::vector<int>> GetDist() const { return distances; }
+
+  std::vector<std::vector<int>> GetData() const { return data; }
 };
 
 #endif  // GRAPH_HEADER_GRAPH_H_

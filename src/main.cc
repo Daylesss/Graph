@@ -15,6 +15,7 @@ int main() {
   // Graph graph{8, edges};
   Graph graph{"test_graphs/0.txt"};
   KamadaKawai A{graph, 1000, 5.0};
+  std::cout << "--" << std::endl;
   A.RunOptimization(0.5);
   Converter C{graph.GetEdges(), A.GetVertexPositions()};
   C.Convert("GRAPH.bmp");

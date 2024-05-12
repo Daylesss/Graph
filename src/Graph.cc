@@ -5,8 +5,7 @@
 #include <iostream>
 
 Graph::Graph(int _order, std::vector<std::vector<int>> _edges)
-    : data(_order),
-    distances(_order, std::vector<int>(_order, -1)) {
+    : data(_order), distances(_order, std::vector<int>(_order, -1)) {
   order = _order;
   edges.swap(_edges);
   // add symmetric edges to graph
@@ -25,7 +24,7 @@ Graph::Graph(const std::string &filename) {
   if (!input.is_open()) {
     throw std::runtime_error("Failed to open file");
   }
-  
+
   input >> order >> size;
 
   data.resize(order);
@@ -44,7 +43,7 @@ Graph::Graph(const std::string &filename) {
     if (v_from < 0 || v_to >= order || v_to < 0 || v_to >= order) {
       throw std::runtime_error("Invalid vertex index in edge definition");
     }
-    edges.push_back(std::vector<int> {v_from, v_to});
+    edges.push_back(std::vector<int>{v_from, v_to});
 
     data[v_from].push_back(v_to);
     data[v_to].push_back(v_from);

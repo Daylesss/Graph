@@ -17,7 +17,7 @@ KamadaKawai::KamadaKawai(Graph &graph, int side = 1000, double K = 5.0)
     for (int j = 0; j < order; j++) {
       double d = graph.Dist(i, j);
       // skip vertex if it is not connected
-      if (d < 0) {
+      if (d <= 0) {
         continue;
       }
       // skip if it is the same verteces
@@ -98,6 +98,9 @@ std::pair<double, double> KamadaKawai::ComputeDer(int num) {
     if (i == num) {
       continue;
     }
+    if (GetK(num, i) == -1 or GetL(num, i) == 1) {
+      continue;
+    }
     // if (graph.Dist(num, i) == -1) {continue;}
     double deltaX = (XY[num].first - XY[i].first);
     double deltaY = (XY[num].second - XY[i].second);
@@ -134,6 +137,9 @@ double KamadaKawai::ComputeA12(int num) {
     if (i == num) {
       continue;
     }
+    if (GetK(num, i) == -1 or GetL(num, i) == 1) {
+      continue;
+    }
     double deltaX = XY[num].first - XY[i].first;
     double deltaY = XY[num].second - XY[i].second;
     double denum = std::pow(deltaX, 2) + std::pow(deltaY, 2);
@@ -148,6 +154,9 @@ std::pair<double, double> KamadaKawai::Compute2Der(int num) {
   double sumY = 0.0;
   for (int i = 0; i < order; i++) {
     if (i == num) {
+      continue;
+    }
+    if (GetK(num, i) == -1 or GetL(num, i) == 1) {
       continue;
     }
     double deltaX = XY[num].first - XY[i].first;
