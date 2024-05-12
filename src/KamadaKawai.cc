@@ -55,6 +55,7 @@ void KamadaKawai::RunOptimization(double eps) {
     }
     // numper of vertex with max deviation
     int p = m_p.second;
+    int count = 0;
     while (true) {
       // compute deviation in nested loop
       // for current p
@@ -63,12 +64,18 @@ void KamadaKawai::RunOptimization(double eps) {
       if (a < eps) {
         break;
       }
+      if (count > 200) {
+        std::cout << "Exceeded max loop count" << std::endl;
+        std::cout << "skip this vertex and come back later" << std::endl;
+        break;
+      }
       // get displacement for x and y
       // to minimize deviation
       auto deltaXY = GetDeltaXY(p);
       // move vertex
       XY[p].first = XY[p].first + deltaXY.first;
       XY[p].second = XY[p].second + deltaXY.second;
+      count++;
     }
   }
 }
