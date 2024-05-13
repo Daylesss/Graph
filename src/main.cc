@@ -13,7 +13,7 @@ int main() {
   //                                        {4, 7}, {3, 7}, {6, 7}, {4, 5},
   //                                        {4, 6}, {5, 6}};
   // Graph graph{8, edges};
-  for (int j = 0; j < 9; j++) {
+  for (int j = 0; j < 12; j++) {
     Graph graph{"test_graphs/" + std::to_string(j) + ".txt"};
     KamadaKawai A{graph, 1000, 5.0};
     A.RunOptimization(0.5);
